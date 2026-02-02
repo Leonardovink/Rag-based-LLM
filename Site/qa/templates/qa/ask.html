@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Ask bot</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      color: #333;
+      padding: 20px;
+      text-align: center;
+    }
+  
+    h1 {
+      color: #007bff;
+    }
+  
+    .container {
+      margin: 0 auto;
+      max-width: 700px;
+    }
+  
+    .query {
+      margin-bottom: 20px;
+    }
+
+    .input-group {
+      margin-bottom: 20px;
+    }
+  
+    .input-group input[type="text"] {
+      padding: 10px;
+      width: 100%;
+      border: none;
+      border-radius: 4px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+  
+    .input-group button {
+      padding: 10px 20px;
+      border: none;
+      background-color: #007bff;
+      color: #fff;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  
+    .input-group button:hover {
+      background-color: #0056b3;
+    }
+
+    .result-box {
+      border: 1px solid #ccc;
+      background-color: #fff;
+      padding: 20px;
+      margin-bottom: 20px;
+      text-align: left;
+      position: relative;
+    }
+
+    .ellipsis {
+      background-color: #f1f1f1; /* Grey background color */
+      color: #999; /* Faded text color */
+      opacity: 0.6; /* Faded opacity */
+      padding: 3px 5px; /* Add padding for spacing */
+      border-radius: 3px; /* Rounded corners */
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); /* Drop shadow */
+      cursor: pointer; /* Change cursor on hover */
+    }
+
+    .ellipsis:hover {
+      opacity: 1; /* Increase opacity on hover */
+    }
+
+    .document-item {
+      margin-bottom: 10px;
+    }
+
+    .document-content {
+      display: none;
+      margin-top: 5px;
+      padding-left: 15px;
+    }
+
+    .subtitle {
+      font-size: 18px;
+      font-weight: bold;
+      color: #333;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+
+    .loading {
+      animation: spin 2s linear infinite;
+      position: absolute;
+      top: 50%; /* Position at the center vertically */
+      left: 50%; /* Position at the center horizontally */
+      transform: translate(-50%, -50%); /* Center the element */
+      border: 8px solid transparent; /* Adjust border width */
+      border-top: 8px solid #3498db; /* Blue */
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: translate(-50%, -50%) rotate(0deg); /* Apply translation and rotation */
+      }
+      100% {
+        transform: translate(-50%, -50%) rotate(360deg); /* Apply translation and rotation */
+      }
+    } 
+  </style>
+</head>
+<body>
+  <h1>Ask the Bot</h1>
+  <div class="container">
+    <div class="input-group">
+      <input type="text" class="query" id="query" placeholder="Enter your question" onkeydown="handleKeyDown(event)"/>
+      
+      <p></p>
+      <button id="submitButton" onclick="askBot()">Ask</button>
+    </div>
+    <div id="resultContainer">
+      <div id="result" class="result-box">
+
+        <div id="answerContainer">
+          <p id="answer"></p>
+        </div>
+        <div id="references">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+</body>
+</html>

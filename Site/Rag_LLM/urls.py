@@ -16,9 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from qa.views import ask_question
+from qa.views import ask_page, rag_chat
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("", ask_question, name="ask"),
+    path("", ask_page, name="ask_page"),
+    path("ask/", rag_chat, name="rag_chat"),
 ]

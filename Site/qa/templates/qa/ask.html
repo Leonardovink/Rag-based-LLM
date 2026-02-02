@@ -118,7 +118,7 @@
   <h1>Ask the Bot</h1>
   <div class="container">
     <div class="input-group">
-      <input type="text" class="query" id="query" placeholder="Enter your question" onkeydown="handleKeyDown(event)"/>
+      <input type="text" class="query" id="query" name="question" placeholder="Enter your question" onkeydown="handleKeyDown(event)"/>
       
       <p></p>
       <button id="submitButton" onclick="askBot()">Ask</button>
@@ -135,6 +135,54 @@
     </div>
   </div>
 
-  
+  <script>
+    function getCSRFToken() {
+      return document.cookie
+        .split("; ")
+        .find(row => row.startsWith("csrftoken="))
+        ?.split("=")[1];
+    }
+    
+    function askBot() {
+      const query = document.getElementById("query").value;
+      if (!query) return;
+    
+      document.getElementById("answer").innerText = "Thinking...";
+    
+      const formData = new FormData();
+      formData.append("question", query);
+    
+      fetch("/ask/", {
+        method: "POST",
+        headers: {
+          "X-CSRFToken": getCSRFToken(),
+        },
+        body: formData,
+      })
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById("answer").innerText = data.answer;
+    
+        const refs = document.getElementById("references");
+        refs.innerHTML = "<h4>Sources</h4>";
+        data.sources.forEach(src => {
+          const p = document.createElement("p");
+          p.innerText = src;
+          refs.appendChild(p);
+        });
+      })
+      .catch(err => {
+        document.getElementById("answer").innerText = "Error occurred.";
+        console.error(err);
+      });
+    }
+    
+    function handleKeyDown(event) {
+      if (event.key === "Enter") {
+        askBot();
+      }
+    }
+    </script>
+    
 </body>
 </html>

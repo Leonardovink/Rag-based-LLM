@@ -1,21 +1,22 @@
 from django.shortcuts import render
+from django.http import JsonResponse
+from .rag import query_rag
 
-# Create your views here.
-from .question import QuestionForm
 
-def ask_question(request):
-    answer = None
+def ask_page(request):
+    return render(request, "qa/ask.html")
 
-    if request.method == "POST":
-        form = QuestionForm(request.POST)
-        if form.is_valid():
-            question = form.cleaned_data["question"]
-            # placeholder answer for now
-            answer = f"You asked: {question}"
-    else:
-        form = QuestionForm()
+def rag_chat(request):
+    if request.method != "POST":
+        return JsonResponse({"error": "POST only"}, status=405)
 
-    return render(request, "qa/ask.html", {
-        "form": form,
-        "answer": answer
+    question = request.POST.get("question")
+    if not question:
+        return JsonResponse({"error": "No question provided"}, status=400)
+
+    answer, sources = query_rag(question)
+
+    return JsonResponse({
+        "answer": answer,
+        "sources": sources,
     })
